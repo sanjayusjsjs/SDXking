@@ -1,256 +1,177 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDX AI - Result Display</title>
+    <title>MADE BY @Hackerking995</title>
     <style>
-        /* General Body Styling */
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #2c003e, #3e000c);
-            color: #000000;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             overflow: hidden;
-            position: relative;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
         }
 
-        /* Background Particle Animation */
-        .particles {
+        h1 {
+            margin-top: 20px;
+            color: #f00; /* Neon Red */
+            text-shadow: 0 0 10px #f00, 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 50px #f00;
+        }
+
+        .container {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background-color: #111;
+            border: 2px solid #f00; /* Neon red border */
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 20px #f00;
+            text-align: center;
+        }
+
+        .result {
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: #0f0;
+        }
+
+        .button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #0ff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 15px #0ff;
+        }
+
+        .button:hover {
+            background-color: #0cc;
+        }
+
+        canvas {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: rgba(128, 0, 0, 0.8);
-            border-radius: 50%;
-            animation: float 5s infinite linear;
-        }
-
-        .particle:nth-child(odd) {
-            background: rgba(75, 0, 130, 0.8);
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(50px) scale(0.5);
-                opacity: 0;
-            }
-        }
-
-        .line {
-            position: absolute;
-            width: 2px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.1);
-            animation: slide 4s infinite ease-in-out;
-        }
-
-        .line:nth-child(odd) {
-            background: rgba(255, 0, 0, 0.2);
-        }
-
-        .line:nth-child(even) {
-            background: rgba(75, 0, 130, 0.2);
-        }
-
-        @keyframes slide {
-            0% {
-                transform: translateY(0) translateX(0) scaleY(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(-50px) scaleY(0.5);
-                opacity: 0;
-            }
-        }
-
-        /* Header Styling */
-        .header {
-            font-size: 36px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            color: #ff6666;
-            text-shadow: 0 0 15px #ff3333, 0 0 30px #800000;
-        }
-
-        /* Result Container */
-        .result-container {
-            width: 80%;
-            max-width: 900px;
-            background: linear-gradient(145deg, #1c1c3a, #262673);
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(77, 166, 255, 0.7), 0 0 60px rgba(128, 128, 255, 0.5);
-            padding: 20px;
-            text-align: center;
-        }
-
-        /* Period & Timer */
-        .period-timer {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 18px;
-            color: #ffa31a;
-        }
-
-        .period-timer div {
-            text-shadow: 0 0 10px #ffa31a;
-        }
-
-        /* Result Box */
-        .result-box {
-            background: #1a1a3d;
-            border: 2px solid #4da6ff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 10px;
-            box-shadow: 0 0 20px rgba(77, 166, 255, 0.5);
-        }
-
-        .result-box h2 {
-            margin: 0;
-            font-size: 28px;
-            color: #ffa31a;
-            text-shadow: 0 0 15px #ffa31a;
-        }
-
-        .result {
-            margin-top: 10px;
-            font-size: 48px;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0 0 20px #4da6ff;
-        }
-
-        .result.big {
-            color: #ff6666;
-            text-shadow: 0 0 20px #ff3333;
-        }
-
-        .result.small {
-            color: #66ff66;
-            text-shadow: 0 0 20px #33cc33;
-        }
-
-        /* Action Buttons */
-        .button-container {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .button {
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #ffffff;
-            background: linear-gradient(45deg, #4da6ff, #1c1c3a);
-            border: 2px solid #4da6ff;
-            border-radius: 5px;
-            text-shadow: 0 0 10px #4da6ff;
-            box-shadow: 0 0 20px rgba(77, 166, 255, 0.7);
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px #809fff;
-        }
-
-        .button:active {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #4da6ff;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <div class="header">SDX AI - Results</div>
-    <div class="result-container">
-        <div class="period-timer">
-            <div>Period: <span id="period1m">Loading...</span></div>
-            <div>Timer: <span id="timer1m">00:00</span></div>
-        </div>
-        <div class="result-box">
-            <h2>Current Result</h2>
-            <div id="resultDisplay" class="result">Loading...</div>
-        </div>
-        <div class="button-container">
-            <button id="resultButton" class="button">Show Result</button>
-        </div>
+    <canvas id="particleCanvas"></canvas>
+    <h1>MADE BY @Hackerking995</h1>
+    <div class="container">
+        <h2>Period Calculator</h2>
+        <p id="periodNumber" class="result">Period Number: Calculating...</p>
+        <p id="resultText" class="result">Result: Calculating...</p>
+        <button class="button" onclick="showResults()">Show Results</button>
     </div>
-    <div class="particles">
-        <!-- Generate particles dynamically -->
-    </div>
+
     <script>
-        const particlesContainer = document.querySelector('.particles');
+        // Period Calculator Logic
+        function showResults() {
+            const calendar = new Date();
+            const hour = calendar.getHours();
+            const minute = calendar.getMinutes();
+            const totalMinutes = (hour * 60) + minute;
 
-        // Create particles and lines
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = `${Math.random() * 100}vw`;
-            particle.style.animationDelay = `${Math.random() * 5}s`;
-            particlesContainer.appendChild(particle);
+            const currentDate = calendar.toISOString().split('T')[0].replace(/-/g, '');
+            const offset = 330;
+            const periodCalculation = 10001 + totalMinutes - offset;
+            const periodNumber = currentDate + "1000" + periodCalculation;
 
-            const line = document.createElement('div');
-            line.className = 'line';
-            line.style.left = `${Math.random() * 100}vw`;
-            line.style.animationDelay = `${Math.random() * 4}s`;
-            particlesContainer.appendChild(line);
+            document.getElementById("periodNumber").textContent = `Period Number: ${periodNumber}`;
+
+            let digitSum = 0;
+            for (const digitChar of String(periodCalculation)) {
+                digitSum += parseInt(digitChar, 10);
+            }
+
+            const resultNumber = (digitSum * 7) % 10;
+            const result = (resultNumber >= 1 && resultNumber <= 4) ? "SMALL" : "BIG";
+
+            document.getElementById("resultText").textContent = `Result: ${result}`;
         }
 
-        const resultsPattern = ["SMALL", "BIG", "SMALL", "BIG", "SMALL", "SMALL", "BIG", "SMALL", "BIG", "BIG"];
-        let currentPeriodIndex = 0;
+        // Automatically update results every second
+        setInterval(showResults, 1000);
 
-        function updatePeriodAndTimer() {
-            const now = new Date();
-            const seconds = now.getUTCSeconds();
-            const remainingSeconds = 60 - seconds;
+        // Particle Animation Logic
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-            const periodElement = document.getElementById("period1m");
-            const periodNumber = `${now.getUTCFullYear()}${(now.getUTCMonth() + 1).toString().padStart(2, "0")}${now.getUTCDate().toString().padStart(2, "0")}1000${(10001 + now.getUTCHours() * 60 + now.getUTCMinutes()).toString()}`;
-            periodElement.textContent = periodNumber;
+        const particles = [];
+        const particleCount = 120; // Number of particles
 
-            const timerElement = document.getElementById("timer1m");
-            timerElement.textContent = `00:${remainingSeconds.toString().padStart(2, "0")}`;
+        class Particle {
+            constructor(x, y, speedX, speedY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.speedX = speedX;
+                this.speedY = speedY;
+                this.size = size;
+                this.color = color;
+            }
 
-            if (remainingSeconds === 60) {
-                displayResult(periodNumber);
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x + this.size, this.y + this.size);
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+
+                this.draw();
             }
         }
 
-        function displayResult() {
-            const resultDisplay = document.getElementById("resultDisplay");
-            const currentResult = resultsPattern[currentPeriodIndex];
-            resultDisplay.textContent = currentResult;
-            resultDisplay.className = `result ${currentResult.toLowerCase()}`;
-            currentPeriodIndex = (currentPeriodIndex + 1) % resultsPattern.length;
+        function initParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const speedX = (Math.random() - 0.5) * 2;
+                const speedY = (Math.random() - 0.5) * 2;
+                const size = Math.random() * 5 + 1;
+                const color = (Math.random() > 0.5) ? "rgba(255, 0, 0, 0.8)" : "rgba(238, 130, 238, 0.8)"; // Neon red or Light violet
+                particles.push(new Particle(x, y, speedX, speedY, size, color));
+            }
         }
 
-        document.getElementById("resultButton").addEventListener("click", () => {
-            displayResult();
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => particle.update());
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
 
-        setInterval(updatePeriodAndTimer, 1000);
+        initParticles();
+        animateParticles();
     </script>
 </body>
 </html>
